@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  cassandra:
+    image: cassandra
+    container_name: cassandra_engine
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    healthcheck:
+      test: [ "CMD-SHELL", "cqlsh --username cassandra --password cassandra -e 'describe cluster'" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    ports:
+      - 9042:9042
+
+  
+
+  cassandra-web:
+    image: ipushc/cassandra-web
+    depends_on:
+      - cassandra
+    links: 
+      - cassandra
+    environment:
+      CASSANDRA_HOST: cassandra
+      CASSANDRA_PORT: 9042
+      CASSANDRA_USERNAME: cassandra
+      CASSANDRA_PASSWORD: cassandra
+    ports:
+      - 3001:8083
