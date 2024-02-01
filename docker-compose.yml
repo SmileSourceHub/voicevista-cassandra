@@ -4,31 +4,18 @@ services:
   cassandra:
     image: cassandra
     container_name: cassandra_engine
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-    healthcheck:
-      test: [ "CMD-SHELL", "cqlsh --username cassandra --password cassandra -e 'describe cluster'" ]
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 20s
+    #deploy:
+    #  restart_policy:
+    #    condition: on-failure
+    #    max_attempts: 3
+    #healthcheck:
+    #  test: cqlsh -u cassandra -p cassandra -k voicevista
+    #  interval: 5s
+    #  timeout: 10s
+    #  retries: 6
+    #volumes:
+    #  - "./cassandra/cassandra-init.sh:/cassandra-init.sh"
+    #command: "sh /cassandra-init.sh"
     ports:
       - 9042:9042
 
-  
-
-  cassandra-web:
-    image: ipushc/cassandra-web
-    depends_on:
-      - cassandra
-    links: 
-      - cassandra
-    environment:
-      CASSANDRA_HOST: cassandra
-      CASSANDRA_PORT: 9042
-      CASSANDRA_USERNAME: cassandra
-      CASSANDRA_PASSWORD: cassandra
-    ports:
-      - 3001:8083

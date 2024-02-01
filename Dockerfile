@@ -19,6 +19,6 @@ ENV PATH="/liquibase:${PATH}"
 RUN liquibase --classpath=/liquibase/lib/liquibase-cassandra.jar:/liquibase/lib/liquibase-jdbc-cassandra.jar \
               --changeLogFile=/scripts/local.changelog-root.xml \
               --defaultsFile=/scripts/liquibase.properties \
-              --url="mongodb://localhost:27017/${MONGODB_DB}" \
+              --url="jdbc:cassandra://localhost:9042/voicevista" \
               --logLevel=debug \
               update
